@@ -91,19 +91,39 @@ export default function HomePage() {
       </h2>
 
       {/* Bus Selection Buttons */}
-      <section className="flex justify-center flex-wrap gap-2 py-5 mb-5">
+      <section className="flex justify-center flex-wrap gap-4 py-5 mb-5">
         {buses.map((bus, index) => (
-          <button
-            key={bus.id}
-            className={`px-4 py-2 rounded ${
-              activeBus?.id === bus.id
-                ? "bg-green-600 text-white"
-                : "bg-white border"
-            }`}
-            onClick={() => setActiveBus(bus)}
-          >
-            {`Bus ${index + 1}`}
-          </button>
+          <div key={bus.id} className="flex flex-col items-center">
+            {/* زر الباص */}
+            <button
+              className={`px-4 py-2 rounded transition-all duration-200 ${
+                activeBus?.id === bus.id
+                  ? "bg-green-600 text-white shadow"
+                  : "bg-white border hover:bg-green-100 hover:shadow-sm"
+              }`}
+              onClick={() => setActiveBus(bus)}
+            >
+              {`Bus ${index + 1}`}
+            </button>
+
+            {/* Progress Bar */}
+            <div className="w-24 h-3 bg-gray-200 rounded-full mt-2">
+              <div
+                className={`h-3 rounded-full ${
+                  bus.passengers.utilization_percentage < 70
+                    ? "bg-green-500"
+                    : bus.passengers.utilization_percentage < 90
+                    ? "bg-yellow-400"
+                    : "bg-red-500"
+                }`}
+                style={{ width: `${bus.passengers.utilization_percentage}%` }}
+              ></div>
+            </div>
+
+            <span className="text-xs mt-1">
+              {`${bus.passengers.current}/${bus.passengers.capacity}`}
+            </span>
+          </div>
         ))}
       </section>
 
@@ -170,19 +190,40 @@ export default function HomePage() {
           Bus Schedule {activeBus ? `(${activeBus.route_number})` : ""}
         </h2>
 
-        <section className="flex justify-center flex-wrap gap-2 py-3 my-5">
+        {/* Bus Selection Buttons */}
+        <section className="flex justify-center flex-wrap gap-4 py-5 mb-5">
           {buses.map((bus, index) => (
-            <button
-              key={bus.id}
-              className={`px-4 py-2 rounded ${
-                activeBus?.id === bus.id
-                  ? "bg-green-600 text-white"
-                  : "bg-white border"
-              }`}
-              onClick={() => setActiveBus(bus)}
-            >
-              {`Bus ${index + 1}`}
-            </button>
+            <div key={bus.id} className="flex flex-col items-center">
+              {/* زر الباص */}
+              <button
+                className={`px-4 py-2 rounded transition-all duration-200 ${
+                  activeBus?.id === bus.id
+                    ? "bg-green-600 text-white shadow"
+                    : "bg-white border hover:bg-green-100 hover:shadow-sm"
+                }`}
+                onClick={() => setActiveBus(bus)}
+              >
+                {`Bus ${index + 1}`}
+              </button>
+
+              {/* Progress Bar */}
+              <div className="w-24 h-3 bg-gray-200 rounded-full mt-2">
+                <div
+                  className={`h-3 rounded-full ${
+                    bus.passengers.utilization_percentage < 70
+                      ? "bg-green-500"
+                      : bus.passengers.utilization_percentage < 90
+                      ? "bg-yellow-400"
+                      : "bg-red-500"
+                  }`}
+                  style={{ width: `${bus.passengers.utilization_percentage}%` }}
+                ></div>
+              </div>
+
+              <span className="text-xs mt-1">
+                {`${bus.passengers.current}/${bus.passengers.capacity}`}
+              </span>
+            </div>
           ))}
         </section>
 
