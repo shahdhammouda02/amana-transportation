@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import busData from "./data/data.json";
 import "leaflet/dist/leaflet.css";
+import { FaBus } from "react-icons/fa";
+import { renderToStaticMarkup } from "react-dom/server";
 
 // Dynamic imports for react-leaflet components
 const MapContainer = dynamic(
@@ -161,13 +163,47 @@ export default function HomePage() {
             }
           />
 
-          {/* Markers */}
+          <Marker
+            key={`location-pin-${activeBus.id}`}
+            position={[
+              activeBus.current_location.latitude,
+              activeBus.current_location.longitude,
+            ]}
+            icon={L.icon({
+              iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+              iconSize: [24, 24],
+              iconAnchor: [12, 24],
+            })}
+          />
+          <Marker
+            key={`bus-icon-${activeBus.id}`}
+            position={[
+              activeBus.current_location.latitude,
+              activeBus.current_location.longitude,
+            ]}
+            icon={L.divIcon({
+              html: renderToStaticMarkup(<FaBus color="green" size={38} />),
+              className: "",
+              iconSize: [38, 38],
+              iconAnchor: [19, 38],
+            })}
+          >
+            <Popup>
+              <strong>{activeBus.name}</strong>
+              <br />
+              Driver: {activeBus.driver.name}
+              <br />
+              Status: {activeBus.status}
+            </Popup>
+          </Marker>
+
           {activeBus.bus_stops.map((stop) => (
             <Marker
               key={stop.id}
               position={[stop.latitude, stop.longitude]}
               icon={L.icon({
-                iconUrl: "https://cdn-icons-png.flaticon.com/512/61/61205.png",
+                iconUrl:
+                  "https://cdn-icons-png.flaticon.com/512/684/684908.png",
                 iconSize: [25, 25],
               })}
             >
